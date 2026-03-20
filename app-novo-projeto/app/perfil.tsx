@@ -2,27 +2,27 @@ import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Home() {
+export default function Perfil() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.headerSolid}>
         <View style={styles.headerContent}>
-          <View>
-            <Text style={styles.greeting}>Olá! 👋</Text>
-            <Text style={styles.appName}>Limpa Feira</Text>
-          </View>
-          <View style={styles.logoCircle}>
-            <Ionicons name="leaf" size={24} color="#0A6847" />
+          <Text style={styles.headerTitle}>Perfil</Text>
+          <View style={styles.headerIconCircle}>
+            <Ionicons name="person-outline" size={22} color="#0A6847" />
           </View>
         </View>
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.sectionTitle}>Bem-vindo ao app</Text>
-        <Text style={styles.sectionText}>
-          Use o menu abaixo para navegar entre as funcionalidades.
-        </Text>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatar}>
+            <Ionicons name="person" size={48} color="#16C47F" />
+          </View>
+        </View>
+        <Text style={styles.nome}>Usuário</Text>
+        <Text style={styles.email}>usuario@email.com</Text>
       </View>
     </SafeAreaView>
   );
@@ -44,17 +44,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  greeting: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-  },
-  appName: {
+  headerTitle: {
     fontSize: 26,
     fontWeight: '800',
     color: '#FFFFFF',
     letterSpacing: 0.5,
   },
-  logoCircle: {
+  headerIconCircle: {
     width: 44,
     height: 44,
     borderRadius: 22,
@@ -64,18 +60,30 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 28,
+    alignItems: 'center',
+    paddingTop: 36,
   },
-  sectionTitle: {
-    fontSize: 20,
+  avatarContainer: {
+    marginBottom: 16,
+  },
+  avatar: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: 'rgba(10, 104, 71, 0.08)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#E0EDE5',
+  },
+  nome: {
+    fontSize: 22,
     fontWeight: '700',
     color: '#1A3C2A',
-    marginBottom: 8,
+    marginBottom: 4,
   },
-  sectionText: {
+  email: {
     fontSize: 14,
-    color: '#5A7D68',
-    lineHeight: 20,
+    color: '#8FAE9B',
   },
 });

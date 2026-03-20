@@ -19,10 +19,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
-export default function Login() {
+export default function EsqueceuSenha() {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [senhaVisivel, setSenhaVisivel] = useState(false);
 
   // Animações
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -73,8 +71,16 @@ export default function Login() {
     ]).start();
   }, []);
 
-  function handleLogin() {
-    router.push('/(tabs)');
+  function handleRecuperar() {
+    if (!email.trim()) {
+      Alert.alert('Atenção', 'Por favor, informe seu e-mail.');
+      return;
+    }
+    Alert.alert(
+      'E-mail enviado',
+      'Verifique sua caixa de entrada para redefinir sua senha.',
+      [{ text: 'OK', onPress: () => router.push('/') }],
+    );
   }
 
   return (
@@ -103,7 +109,7 @@ export default function Login() {
             ]}
           >
             <View style={styles.logoCircle}>
-              <Ionicons name="leaf" size={38} color="#0A6847" />
+              <Ionicons name="key-outline" size={34} color="#0A6847" />
             </View>
           </Animated.View>
 
@@ -117,9 +123,9 @@ export default function Login() {
               },
             ]}
           >
-            <Text style={styles.title}>Limpa Feira</Text>
+            <Text style={styles.title}>Recuperar Senha</Text>
             <Text style={styles.subtitle}>
-              Faça se login para continuar.
+              Informe seu e-mail para redefinir
             </Text>
           </Animated.View>
 
@@ -133,6 +139,14 @@ export default function Login() {
               },
             ]}
           >
+            {/* Mensagem informativa */}
+            <View style={styles.infoBox}>
+              <Ionicons name="information-circle-outline" size={18} color="#0A6847" />
+              <Text style={styles.infoText}>
+                Enviaremos um link de recuperação para o e-mail cadastrado.
+              </Text>
+            </View>
+
             {/* Input Email */}
             <View style={styles.inputWrapper}>
               <Ionicons
@@ -152,48 +166,14 @@ export default function Login() {
               />
             </View>
 
-            {/* Input Senha */}
-            <View style={styles.inputWrapper}>
-              <Ionicons
-                name="lock-closed-outline"
-                size={20}
-                color="#0A6847"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                placeholderTextColor="#9CBAAA"
-                secureTextEntry={!senhaVisivel}
-                value={senha}
-                onChangeText={setSenha}
-              />
-              <TouchableOpacity
-                onPress={() => setSenhaVisivel(!senhaVisivel)}
-                style={styles.eyeButton}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <Ionicons
-                  name={senhaVisivel ? 'eye-off-outline' : 'eye-outline'}
-                  size={20}
-                  color="#0A6847"
-                />
-              </TouchableOpacity>
-            </View>
-
-            {/* Esqueceu a senha */}
-            <TouchableOpacity style={styles.forgotButton} onPress={() => router.push('/esqueceu-senha')}>
-              <Text style={styles.forgotText}>Esqueceu a senha?</Text>
-            </TouchableOpacity>
-
-            {/* Botão Entrar */}
+            {/* Botão Enviar */}
             <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleLogin}
+              style={styles.enviarButton}
+              onPress={handleRecuperar}
               activeOpacity={0.85}
             >
-              <View style={styles.loginButtonInner}>
-                <Text style={styles.loginButtonText}>Entrar</Text>
+              <View style={styles.enviarButtonInner}>
+                <Text style={styles.enviarButtonText}>Enviar link</Text>
               </View>
             </TouchableOpacity>
 
@@ -204,14 +184,15 @@ export default function Login() {
               <View style={styles.dividerLine} />
             </View>
 
-            {/* Criar Conta */}
-            <TouchableOpacity style={styles.registerButton} activeOpacity={0.8} onPress={() => router.push('/cadastro')}>
-              <Text style={styles.registerButtonText}>Criar nova conta</Text>
+            {/* Voltar ao Login */}
+            <TouchableOpacity
+              style={styles.voltarButton}
+              activeOpacity={0.8}
+              onPress={() => router.push('/')}
+            >
+              <Text style={styles.voltarButtonText}>Voltar ao login</Text>
             </TouchableOpacity>
           </Animated.View>
-
-          {/* Footer */}
-          
         </KeyboardAvoidingView>
       </LinearGradient>
     </SafeAreaView>
@@ -287,10 +268,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '800',
     color: '#FFFFFF',
-    letterSpacing: 1,
+    letterSpacing: 0.5,
     marginBottom: 6,
   },
   subtitle: {
@@ -311,14 +292,31 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
 
-  // Inputs
+  // Info box
+  infoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(10, 104, 71, 0.06)',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 18,
+    gap: 10,
+  },
+  infoText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#1A3C2A',
+    lineHeight: 18,
+  },
+
+  // Input
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F2F7F2',
     borderRadius: 14,
     paddingHorizontal: 16,
-    marginBottom: 14,
+    marginBottom: 18,
     height: 54,
     borderWidth: 1,
     borderColor: '#E0EDE5',
@@ -332,24 +330,9 @@ const styles = StyleSheet.create({
     color: '#1A3C2A',
     height: '100%',
   },
-  eyeButton: {
-    padding: 4,
-  },
 
-  // Esqueceu a senha
-  forgotButton: {
-    alignSelf: 'flex-end',
-    marginBottom: 20,
-    marginTop: 2,
-  },
-  forgotText: {
-    fontSize: 13,
-    color: '#0A6847',
-    fontWeight: '600',
-  },
-
-  // Botão Entrar
-  loginButton: {
+  // Botão Enviar
+  enviarButton: {
     borderRadius: 14,
     overflow: 'hidden',
     shadowColor: '#0A6847',
@@ -359,14 +342,14 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginBottom: 20,
   },
-  loginButtonInner: {
+  enviarButtonInner: {
     height: 54,
     borderRadius: 14,
     backgroundColor: '#0A6847',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loginButtonText: {
+  enviarButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
@@ -391,8 +374,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  // Botão Criar Conta
-  registerButton: {
+  // Botão Voltar
+  voltarButton: {
     height: 54,
     borderRadius: 14,
     justifyContent: 'center',
@@ -400,24 +383,10 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: '#0A6847',
   },
-  registerButtonText: {
+  voltarButtonText: {
     color: '#0A6847',
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 0.3,
-  },
-
-  // Footer
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 24,
-    gap: 6,
-  },
-  footerText: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.7)',
-    letterSpacing: 0.2,
   },
 });
